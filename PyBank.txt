@@ -1,0 +1,54 @@
+import csv
+import os
+
+
+os.chdir("C:\\Users\\medinam\\Downloads")
+
+budget_data = "budget_data.csv"
+change_list = []
+months= []
+# Open and Read in the CSV file
+with open(budget_data) as csv_file:
+
+    csv_reader = csv.reader(csv_file, delimiter=",")
+
+    csv_header = next(csv_reader)
+    
+    first_row = next(csv_reader)
+    previous_val = float(first_row[1])
+    Total_Amount = float(first_row[1])
+    Average_Change = 0
+    Greatest_Increase = 0  
+    Greatest_Decrease = 0
+    Increase_Month = ""
+    Decrease_Month = ""    
+       
+# Loop through the data
+    for row in csv_reader:
+
+        months.append(row[0])
+        Total_Amount = float(row[1])+Total_Amount
+        change = float(row[1])-previous_val
+        change_list.append(change)
+        previous_val = float(row[1])
+        
+        if Greatest_Increase<change:
+            Greatest_Increase = change
+            Increase_Month = row[0]
+            
+        if Greatest_Decrease>change:
+            Greatest_Decrease = change
+            Decrease_Month = row[0]
+            
+
+Average_Change = round(sum(change_list)/len(change_list), 2)
+               
+Total_Months = len(months)+1
+
+print("Financial Analysis")
+print("---------------------------------")
+print(f"Total Months: {Total_Months}")
+print(f"Total: ${Total_Amount}")
+print(f"Average Change: ${Average_Change}")
+print(f"Greatest Increase in Profits: {Increase_Month} (${Greatest_Increase})")
+print(f"Greatest Decrease in Profits: {Decrease_Month} (${Greatest_Decrease})")
